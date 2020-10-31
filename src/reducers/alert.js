@@ -7,7 +7,6 @@ const initialState = [];
 export default function(state = initialState, action){
     const { type , payload} = action;
     if(payload){
-        console.log(payload)
         const {msg, alertType, timeout } = payload;
         switch(type) {
             case SET_ALERT:

@@ -22,7 +22,6 @@ import {
   } from "reactstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 import Select from "react-select";
-import {Link} from 'react-router-dom'; 
 import paginationFactory from "react-bootstrap-table2-paginator";
 import overlayFactory from "react-bootstrap-table2-overlay";
 import filterFactory from "react-bootstrap-table2-filter";
@@ -31,29 +30,27 @@ import { useForm, Controller } from "react-hook-form";
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/src/sweetalert2.scss'
 import _ from "lodash"
-import dropdown_items from "./user_module_dropdown_item";
 import "@kenshooui/react-multi-select/dist/style.css";
 import MultiSelect from "@kenshooui/react-multi-select";
+import { connect } from 'react-redux';
+import { getUsers, getUser, updateUser, resetPassword, changeStatus, clearUser } from '../../../actions/user';
+import PropTypes from 'prop-types';
 
-const Users = () => {
-  const { control, handleSubmit, register, errors, reset, getValues, setValue } = useForm();
+
+const Users = ({users, user, totalSize, getUsers, getUser, updateUser, modules, roles, resetPassword, changeStatus, clearUser}) => {
+  const { control, handleSubmit, register, errors ,setError, clearErrors } = useForm();
   const [menuItemName, setMenuItemName] = useState("Users") // For dynamic naming of menu item
-  const [user, setUser] = useState({}); 
+  const [formData, setFormData] = useState({});
   const [page1, setPage1] = useState(1);
-  const [data, setData] = useState([]);
-  const [totalSize, setTotalSize] = useState(0);
-  const [sortFieldQuery, setSortFieldQuery] = useState("name");
+  const [sortFieldQuery, setSortFieldQuery] = useState("users.id");
   const [sortOrderQuery, setSortOrderQuery] = useState("asc");
   const [sizePerPageQuery, setSizePerPageQuery] = useState(10);
-  const [viewModal, setViewModal] = useState(false);
   const [addOrEditModal, setAddOrEditModal] = useState(false);
-  const [updateTable, setUpdateTable] = useState(false);
   const [action, setAction] = useState("");
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(" ");
   const [loading, setLoading] = useState(false);
   const [buttonSpinner, setButtonSpinner] = useState(false);
-  const [selectOptions, setSelectOptions] = useState(dropdown_items)
-  const [selectedModules, setSelectedModules] = useState([])
+  const [selectOptions, setSelectOptions] = useState({modules: [], roles: []})
 
   /* Use Effect */ 
   useEffect(()=>{
@@ -63,80 +60,35 @@ const Users = () => {
       sortFieldQuery,
       sortOrderQuery,
       sizePerPageQuery,
-      updateTable,
       searchText,
     ]
   )
 
-  const reloadTable =()=> {
-    // dispatch the function to get the data
+  useEffect(()=>{
+   setSelectOptions({modules: modules, roles: roles})
+  },[roles, modules])
+
+  /* To stop loading of table*/
+  useEffect(()=>{
+    setLoading(false)
+  },[users])
+
+  /* Pass User Data from redux to local state */
+  useEffect(()=>{
+    setFormData(user)
+  },[user])
+
+  const reloadTable = async ()=> {
+    await getUsers( 
+      page1,
+      sortFieldQuery,
+      sortOrderQuery,
+      sizePerPageQuery,
+      searchText
+    )
   }
 
-  useEffect(()=>{
-    setData([
-      {
-        "id": 1,
-        "name": "Peñano, Lawrence",
-        "email": "admin@gmail.com",
-        "email_verified_at": null,
-        "created_at": "2020-10-05T17:39:03.000000Z",
-        "updated_at": "2020-10-05T17:39:03.000000Z",
-        "user_name": "Lawrence7405/Admin",
-        "role": "Super Admin",
-        "status": "active",
-        "status_id": 1
-    },
-    {
-        "id": 2,
-        "name": "Peñano, Lawrence",
-        "email": "admin2@gmail.com",
-        "email_verified_at": null,
-        "created_at": "2020-10-06T03:06:09.000000Z",
-        "updated_at": "2020-10-06T03:06:09.000000Z",
-        "user_name": "Lawrence9045/Admin",
-        "role": "Super Admin",
-        "status": "active",
-        "status_id": 1
-    },
-    {
-        "id": 3,
-        "name": "Peñano, Lawrence",
-        "email": "admin3@gmail.com",
-        "email_verified_at": null,
-        "created_at": "2020-10-06T04:27:26.000000Z",
-        "updated_at": "2020-10-06T04:27:26.000000Z",
-        "user_name": "Lawrence885/Admin",
-        "role": "Super Admin",
-        "status": "active",
-        "status_id": 1
-    },
-    {
-        "id": 4,
-        "name": "Peñano, Lawrence",
-        "email": "admin4@gmail.com",
-        "email_verified_at": null,
-        "created_at": "2020-10-06T04:30:12.000000Z",
-        "updated_at": "2020-10-06T04:30:12.000000Z",
-        "user_name": "Lawrence3668/Admin",
-        "role": "Super Admin",
-        "status": "active",
-        "status_id": 1
-    },
-    {
-        "id": 5,
-        "name": "Peñano, Lawrence",
-        "email": "admin5@gmail.com",
-        "email_verified_at": null,
-        "created_at": "2020-10-06T04:40:08.000000Z",
-        "updated_at": "2020-10-06T05:08:38.000000Z",
-        "user_name": "Lawrence26/Admin",
-        "role": "Super Admin",
-        "status": "inactive",
-        "status_id": 2
-    }
-  ])
-  },[])
-
+  /* Search */
   const [userQuery, setUserQuery] = useState("");
   const delayedQuery = useRef(_.debounce((q) => sendQuery(q), 500)).current;
   const changeQuery = (e) => {
@@ -149,160 +101,75 @@ const Users = () => {
       setLoading(true);
   };
 
+  /* Modal Triggers */
   const toggleAddModal = () => {
-    setUser({}) // to clean up the modal
     setAction("create");
     setAddOrEditModal(!addOrEditModal);
   };
-
+  
   const toggleEditModal = async (id) => {
-    setAction("update");
-    setAddOrEditModal(!addOrEditModal);
-  };
-
-  
-     /* MODIFY THIS TABLE WITH THE CORRECT DATA FIELD NAMES OF THE MODEL */
-     const columns = [
-      {
-        dataField: "name",
-        text: "Name",
-        sort: true,
-      },
-      {
-        dataField: "email",
-        text: "Email",
-        sort: true,
-      },
-      {
-        dataField: "user_name",
-        text: "User Name",
-        sort: true,
-      },
-      {
-        dataField: "role",
-        text: "Role",
-        sort: true,
-      },
-      {
-        dataField: "status",
-        text: "Status",
-        sort: true,
-      },
-      {
-        dataField: "id",
-        text: "Actions",
-        align:"center",
-        formatter: (cell, row) => {
-          return (
-            <>
-              <Button
-                onClick={() => toggleEditModal(cell)}
-                className="mr-1 bg-warning">
-                <i className="fa fa-pencil"></i>
-              </Button>
-              {
-                row.status_id == 1?
-                <Button
-                onClick={() => changeStatus(cell,row.status_id)}
-                className="mr-1 bg-danger">
-                <i className="fa fa-recycle"></i>
-                </Button>:
-                 <Button
-                 onClick={() => changeStatus(cell,row.status_id)}
-                 className="mr-1 bg-success">
-                 <i className="fa fa-recycle"></i>
-                </Button>
-              }
-            </>
-          );
-        },
-      }
-    ];
-    const defaultSorted = [
-      {
-        dataField: sortFieldQuery,
-        order: sortOrderQuery,
-      },
-    ];
-    const NoDataIndication = () => <div>No Data</div>;
-  
-    const RemoteAll = ({
-      loading,
-      data,
-      page,
-      sizePerPage,
-      onTableChange,
-      totalSize,
-    }) => (
-        <div>
-          <BootstrapTable
-            loading={loading}
-            wrapperClasses="table-responsive"
-            bootstrap4
-            striped
-            remote
-            keyField="id"
-            data={data}
-            columns={columns}
-            defaultSorted={defaultSorted}
-            filter={filterFactory()}
-            pagination={paginationFactory({ page, sizePerPage, totalSize })}
-            onTableChange={onTableChange}
-            overlay={overlayFactory({
-              spinner: true,
-              styles: {
-                overlay: (base) => ({
-                  ...base,
-                  background: "rgba(0, 0, 0, 0.5)",
-                }),
-              },
-            })}
-            noDataIndication={() => <NoDataIndication />}
-          />
-        </div>
-      );
-  
-    const handleTableChange = (
-      type,
-      { page, sizePerPage, filters, sortField, sortOrder }
-    ) => {
-      if (page !== page1) {
-        setPage1(page);
-  
-        setSortFieldQuery(sortField);
-        setSortOrderQuery(sortOrder);
-        setLoading(true);
-      }
-  
-      if (
-        (sortField != sortFieldQuery && sortField != undefined) ||
-        (sortOrder != sortOrderQuery && sortOrder != undefined)
-      ) {
-        setSortFieldQuery(sortField);
-        setSortOrderQuery(sortOrder);
-        setLoading(true);
-      }
-  
-      if (sizePerPage != sizePerPageQuery) {
-        setSizePerPageQuery(sizePerPage);
-        setLoading(true);
-      }
-    };
-  
-  /* Utilies */
-  const getOptionLabelByValue = (options, value, source) => {
-    if (value != undefined && options.length) {
-      const option = options.find((option) => (option.id ? option.id.toString() : option.value.toString()) == value.toString())
-      return option ? option.label : "";
+    if(!addOrEditModal){
+      setAction("update");
+      await getUser(id)
+      setAddOrEditModal(!addOrEditModal);
+    }
+    else{
+      clearUser()
+      setFormData({})
+      setAction("");
+      setAddOrEditModal(!addOrEditModal);
     }
   };
 
-  const handleSelectedModules = (modules) =>{
-    setSelectedModules({ ...selectedModules, modules });
+  /* Handle Form Butons*/
+  const onSubmit = () => {
+    if(action == "update"){
+      setButtonSpinner(true)
+      Swal.fire({
+        title: "Are you sure you want to update the record?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+      }).then(async (result) => {
+        if (result.value) {
+          const updateStatus = await updateUser(formData)
+          if (updateStatus) {
+            Swal.fire(
+              'UPDATED!',
+              'Record has been successfully updated.',
+              'success'
+            )
+            .then(setButtonSpinner(false))
+            .then(()=>{reloadTable()
+            })
+          }
+          else {
+            Swal.fire(
+              'WARNING!',
+              'Record is not succesfully updated. Please try again later',
+              'warning',
+            )
+          }
+        }else{
+          setButtonSpinner(false)
+        }
+      })
+    }
   }
-
-  const changeStatus = (id, status_id) =>{
-    let status = status_id==1?"Deactivate":"Activate";
+  const handleSelectedModules = (modules) =>{
+    if(!modules.length){
+      setError("modules",{
+        type: "required"
+      })
+    }else{
+      clearErrors("modules")
+    }
+    setFormData({ ...formData, assigned_modules: modules });
+  }
+  
+  const handleChangeStatus = (id, status_id) =>{
+    let status = JSON.parse(status_id)==1?"Deactivate":"Activate";
     Swal.fire({
       title: "Are you sure you want to " + status + " the product?",
       type: 'warning',
@@ -311,26 +178,189 @@ const Users = () => {
       cancelButtonText: 'No',
     }).then(async (result) => {
       if (result.value) {
-        const deleteStatus = 1 // await discountTypeActions.deleteDiscount(prod_id)
+        const deleteStatus = await changeStatus(id)
+        console.log(deleteStatus)
         if (deleteStatus) {
           Swal.fire(
             'UPDATED!',
-            'Product Status has been successfully updated.',
+            'Status has been successfully updated.',
             'success'
-          ).then(() => {
-            window.location.reload(true);
-          })
+          ).then(()=>{reloadTable()})
         }
         else {
           Swal.fire(
             'WARNING!',
-            'Product is not deleted. Please try again later',
+            'Status is not succesfully updated. Please try again later',
             'warning',
           )
         }
       }
     })
   }
+
+  const handlePasswordReset = () =>{
+    let id = formData.id;
+    setButtonSpinner(true)
+    Swal.fire({
+      title: "Are you sure you want to reset the password of the user?",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.value) {
+        const deleteStatus = resetPassword(id)
+        if (deleteStatus) {
+          Swal.fire(
+            'UPDATED!',
+            'Password has been successfully updated.',
+            'success'
+          ).then(() => {
+            setButtonSpinner(false)
+          })
+        }
+        else {
+          Swal.fire(
+            'WARNING!',
+            'Password is not updated. Please try again later',
+            'warning',
+          ).then(() => {
+            setButtonSpinner(false)
+          })
+        }
+      }else{
+          setButtonSpinner(false)
+      }
+    })
+  }
+  
+  /* MODIFY THIS TABLE WITH THE CORRECT DATA FIELD NAMES OF THE MODEL */
+  const columns = [
+    {
+      dataField: "name",
+      text: "Name",
+      sort: true,
+    },
+    {
+      dataField: "email",
+      text: "Email",
+      sort: true,
+    },
+    {
+      dataField: "user_name",
+      text: "User Name",
+      sort: true,
+    },
+    {
+      dataField: "role",
+      text: "Role",
+      sort: true,
+    },
+    {
+      dataField: "status",
+      text: "Status",
+      sort: true,
+    },
+    {
+      dataField: "id",
+      text: "Actions",
+      align:"center",
+      formatter: (cell, row) => {
+        return (
+          <>
+            <Button
+              onClick={() => toggleEditModal(cell)}
+              className="mr-1 bg-warning">
+              <i className="fa fa-pencil"></i>
+            </Button>
+            {
+              row.status_id == 1?
+              <Button
+              onClick={() => handleChangeStatus(cell,row.status_id)}
+              className="mr-1 bg-danger">
+              <i className="fa fa-recycle"></i>
+              </Button>:
+              <Button
+              onClick={() => handleChangeStatus(cell,row.status_id)}
+              className="mr-1 bg-success">
+              <i className="fa fa-recycle"></i>
+              </Button>
+            }
+          </>
+        );
+      },
+    }
+  ];
+  const defaultSorted = [
+    {
+      dataField: sortFieldQuery,
+      order: sortOrderQuery,
+    },
+  ];
+  const NoDataIndication = () => <div>No Data</div>;
+
+  const RemoteAll = ({
+    loading,
+    data,
+    page,
+    sizePerPage,
+    totalSize,
+    onTableChange,
+  }) => (
+      <div>
+        <BootstrapTable
+          loading={loading}
+          wrapperClasses="table-responsive"
+          bootstrap4
+          striped
+          remote
+          keyField="id"
+          data={data}
+          columns={columns}
+          defaultSorted={defaultSorted}
+          filter={filterFactory()}
+          pagination={paginationFactory({ page, sizePerPage, totalSize })}
+          onTableChange={onTableChange}
+          overlay={overlayFactory({
+            spinner: true,
+            styles: {
+              overlay: (base) => ({
+                ...base,
+                background: "rgba(0, 0, 0, 0.5)",
+              }),
+            },
+          })}
+          noDataIndication={() => <NoDataIndication />}
+        />
+      </div>
+    );
+  
+  const handleTableChange = (
+    type,
+    { page, sizePerPage, sortField, sortOrder }
+  ) => {
+    
+    if (page !== page1) {
+      setPage1(page);
+      setSortFieldQuery(sortFieldQuery);
+      setSortOrderQuery(sortOrderQuery);
+      setLoading(true);
+    }
+
+    if (
+      (sortField != sortFieldQuery && sortField != undefined) ||
+      (sortOrder != sortOrderQuery && sortOrder != undefined)
+    ) {
+      setSortFieldQuery(sortField);
+      setSortOrderQuery(sortOrder);
+      setLoading(true);
+    }
+
+    if (sizePerPage != sizePerPageQuery) {
+      setSizePerPageQuery(sizePerPage);
+      setLoading(true);
+    }
+  };
 
   return(
     <Fragment>
@@ -344,7 +374,7 @@ const Users = () => {
               <CardBody>
                 <div className="mb-2">
                   <Button
-                    // onClick={() => toggleAddModal()}
+                    onClick={toggleAddModal}
                     disabled={true}
                     color="success"
                     id="add-card-type"
@@ -362,6 +392,7 @@ const Users = () => {
                             type="button"
                             color="primary"
                             id="search-button"
+                            className="mr-0"
                           >
                             <i className="fa fa-search"></i>
                           </Button>
@@ -385,7 +416,7 @@ const Users = () => {
                 </div>
                 <RemoteAll
                   loading={loading}
-                  data={data}
+                  data={users}
                   page={page1}
                   sizePerPage={sizePerPageQuery}
                   totalSize={totalSize}
@@ -401,39 +432,38 @@ const Users = () => {
       {/* This is for ADD/EDIT Modal */}
         <Modal
             isOpen={addOrEditModal}
-            toggle={toggleAddModal}
+            toggle={toggleEditModal}
             className={"modal-lg"}
             backdrop={"static"}
         >
-          <Form >
-            <ModalHeader toggle={toggleAddModal}>
+         <Form onSubmit={handleSubmit(onSubmit)}>
+            <ModalHeader toggle={toggleEditModal}>
               {action == "create" ? "Add " + menuItemName : "Edit " + menuItemName}
             </ModalHeader>
             <ModalBody>
               {/* This is to add the input for ID if the action is update */}
               {action == "update" && (
-                <Controller
-                  as={Input}
-                  type="hidden"
-                  control={control}
-                  // defaultValue={blog.id}
+                <Input
+                  type="text"
+                  defaultValue={formData.id}
                   name="id"
+                  id="id"
+                  hidden={true}
+                  ref={register({ required: true })}
                 />
               )}
                 <Row>
                     <Col xs="12">
                       <FormGroup>
-                        <Label htmlFor="subject">Name <span style={{ color: "red" }}> * </span></Label>
-                        <Controller
-                          as={Input}
+                        <Label htmlFor="name">Name <span style={{ color: "red" }}> * </span></Label>
+                        <Input
                           type="text"
                           id="name"
                           name="name"
+                          ref={register({ required: true })}
                           disabled={true}
                           placeholder="Name"
-                          control={control}
-                          defaultValue={user.name}
-                          value={user.name}
+                          defaultValue={formData.name}
                         />
                       </FormGroup>
                     </Col>
@@ -442,16 +472,14 @@ const Users = () => {
                     <Col xs="12">
                       <FormGroup>
                         <Label htmlFor="subject">Emai <span style={{ color: "red" }}> * </span></Label>
-                        <Controller
-                          as={Input}
+                        <Input
                           type="text"
                           id="email"
                           name="email"
                           disabled={true}
                           placeholder="Email"
-                          control={control}
-                          defaultValue={user.email}
-                          value={user.email}
+                          defaultValue={formData.email}
+                          ref={register({ required: true })}
                         />
                       </FormGroup>
                     </Col>
@@ -460,75 +488,54 @@ const Users = () => {
                     <Col xs="12">
                       <FormGroup>
                         <Label htmlFor="subject">User Name <span style={{ color: "red" }}> * </span></Label>
-                        <Controller
-                          as={Input}
+                        <Input
                           type="text"
-                          id="use_name"
-                          name="use_name"
+                          id="user_name"
+                          name="user_name"
                           disabled={true}
                           placeholder="User Name"
-                          control={control}
-                          defaultValue={user.use_name}
-                          value={user.use_name}
+                          defaultValue={formData.assigned_user_name?formData.assigned_user_name.user_name:""}
+                          ref={register({ required: true })}
                         />
                       </FormGroup>
                     </Col>
                 </Row>
                 <Col xs="12">
                         <FormGroup>
-                          <Label htmlFor="working_hours_schedule">Working Hours Schedule <span style={{ color: "red" }}> * </span></Label>
-                          <Controller
-                            as={
-                              <Select
-                                options={selectOptions.roles}
-                              />
-                            }
+                          <Label htmlFor="role">Roles <span style={{ color: "red" }}> * </span></Label>
+                          <Select
+                            options={selectOptions.roles}
+                            value={formData.assigned_role}
+                            onChange={(value)=>setFormData({...formData, assigned_role: value})}
                             type="text"
-                            id="working_hours_schedule_type"
-                            name="working_hours_schedule_type"
+                            id="role"
+                            name="role"
                             control={control}
-                            rules={{ required: true }}
-                            invalid={errors.working_hours_schedule_type ? true : false}
-                            defaultValue={action == 'update' ? {value: user.role, label: getOptionLabelByValue(selectOptions.roles, user.role )   } : ""}
-                            value={action == 'update' ? {value: user.role, label: getOptionLabelByValue(selectOptions.roles, user.role )   } : ""}
-                            onChange={([value])=>{
-                                return value;
-                            }}
-                          />
-                          {errors.roles && (
-                            <div
-                              style={{
-                                marginTop: "0.25rem",
-                                fontSize: "80%",
-                                color: "#f86c6b",
-                              }}
-                            >
-                              Role is required!
-                            </div>
-                          )}
+                            ref={register({ required: true })}
+                            />
                         </FormGroup>
                   </Col>
                   <Col xs="12">
                         <FormGroup>
                           <Label htmlFor="modules">Modules<span style={{ "color": "red" }}>*</span></Label>
-                          <Controller
-                            defaultValue={selectedModules}
-                            selectedItems={selectedModules}
-                            items={selectOptions.modules.map((item) => { return { "id": item.value, label: item.label } })}
-                            as={
-                              <MultiSelect
+                          <MultiSelect
+                                items={selectOptions.modules.map((item) => { return { "id": item.value, label: item.label } })}
+                                selectedItems={formData.assigned_modules?formData.assigned_modules:[]}
                                 onChange={handleSelectedModules}
-                              />
-                            }
-                            control={control}
-                            id="card_type"
-                            name="card_type"
-                            // rules={{
-                            //   validate: (value) => {
-                            //     return value !== undefined && value.length > 0;
-                            //   },
-                            // }}
-                          />
+                                id="modules"
+                                name="modules"
+                            />
+                               {errors.modules && (
+                                    <div
+                                      style={{
+                                        marginTop: "0.25rem",
+                                        fontSize: "80%",
+                                        color: "#f86c6b",
+                                      }}
+                                    >
+                                      Module is required!
+                                    </div>
+                                  )}
                         </FormGroup>
                     </Col>
                     
@@ -557,31 +564,58 @@ const Users = () => {
                             )}
                         </Button>
                       ) : (
+                        <>
                           <Button
-                            color="primary"
-                            id="update-card-type"
-                            disabled={buttonSpinner}
-                            // onClick={e=>editBlog()}
-                          >
-                            {buttonSpinner ? (
-                              <>
-                                <Spinner
-                                  as="span"
-                                  animation="grow"
-                                  size="sm"
-                                  role="status"
-                                  aria-hidden="true"
-                                />
-                              &nbsp;Processing...
-                              </>
-                            ) : (
-                                "Update"
-                              )}
-                          </Button>
+                              color="danger"
+                              id="update-card-type"
+                              disabled={buttonSpinner}
+                              type="button"
+                              onClick={handlePasswordReset}
+                            >
+                              {buttonSpinner ? (
+                                <>
+                                  <Spinner
+                                    as="span"
+                                    animation="grow"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                  />
+                                &nbsp;Processing...
+                                </>
+                              ) : (
+                                <div>
+                                <i className="fas fa-lock mr-1"></i>
+                                Reset Password
+                                </div>
+                                )}
+                            </Button>
+                            <Button
+                              color="primary"
+                              id="update-card-type"
+                              disabled={buttonSpinner}
+                              type="submit"
+                            >
+                              {buttonSpinner ? (
+                                <>
+                                  <Spinner
+                                    as="span"
+                                    animation="grow"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                  />
+                                &nbsp;Processing...
+                                </>
+                              ) : (
+                                  "Update"
+                                )}
+                            </Button>
+                          </>
                         )}
                       <Button
                         color="secondary"
-                        onClick={toggleAddModal}
+                        onClick={toggleEditModal}
                         id="cancel"
                       >
                         Cancel
@@ -594,4 +628,24 @@ const Users = () => {
   )
 }
 
-export default Users
+Users.propTypes = {
+  getUsers: PropTypes.func.isRequired,
+  getUser: PropTypes.func.isRequired,
+  updateUser: PropTypes.func.isRequired,
+  resetPassword: PropTypes.func.isRequired,
+  changeStatus: PropTypes.func.isRequired,
+  clearUser: PropTypes.func.isRequired,
+  users: PropTypes.array.isRequired,
+  user: PropTypes.object.isRequired,
+  totalSize: PropTypes.number.isRequired,
+}
+
+const mapStateToProps = state => ({
+  users: state.user.users,
+  user: state.user.user,
+  totalSize: state.user.totalSize,
+  modules: state.globalParameter.modules,
+  roles: state.globalParameter.roles,
+})
+
+export default connect(mapStateToProps, { getUsers, getUser, updateUser, resetPassword, changeStatus, clearUser } )(Users);

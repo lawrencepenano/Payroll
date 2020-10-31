@@ -35,15 +35,20 @@ const Modals = React.lazy(() => import('./views/notifications/modals/Modals'));
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'));
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'));
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
-const Users = React.lazy(() => import('./views/pages/users/Users'));
 const User = React.lazy(() => import('./views/pages/users/User'));
+
+const Users = React.lazy(() => import('./views/pages/users/Users'));
+const Company = React.lazy(()=> import('./views/pages/company/Company'))
+const CostCenter = React.lazy(()=> import('./views/pages/cost-center/CostCenter'))
 
 
 
 
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
+  // { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  { path: '/company', name: 'Company', component: Company },
+  { path: '/cost-center', name: 'Company', component: CostCenter },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },

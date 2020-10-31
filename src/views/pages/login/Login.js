@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import {
   CButton,
   CCard,
@@ -37,32 +37,39 @@ import {
   Container
 } from "reactstrap";
 import CIcon from '@coreui/icons-react'
+import { connect } from 'react-redux';
+import { setAlert } from '../../../actions/alert';
+import { login } from '../../../actions/auth';
+import PropTypes from 'prop-types';
 
-const Login = () => {
+const Login = ({setAlert, login, isAuthenticated }) => {
   const { control, handleSubmit, register, errors, reset, getValues, setValue } = useForm();
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
-    password: '',
-    password2: ''
+    password: ''
   })
 
-  const { name, email, password , password2 } = formData;
+  const { email, password } = formData;
 
   const onChange = e => setFormData({...formData, [e.target.name]:e.target.value});
+
   const onSubmit = async e => {
-      e.preventDefault();
-      console.log(e.target.value)
-      if(password !== password2){
-          // setAlert('Password do not match', 'danger')
-      }else {
-          // register({ name, email, password  })
+      if(!email){
+          setAlert('Email/User Name is required!', 'danger')
+          return
       }
+      if(!password){
+          setAlert('Password is required!', 'danger')
+          return
+      }
+        login({email, password})
   }
 
-  if(localStorage.getItem('user')){
-      window.location.replace("/blogs")
+  if(isAuthenticated){
+      return <Redirect to='/dashbord'/>
     }
+
+
 
   return (
     <Fragment>
@@ -74,7 +81,7 @@ const Login = () => {
                     <Col md="9" lg="7" xl="6">
                       <Card className="mx-4 mt-5">
                         <CardBody className="p-4">
-                          <Form onSubmit={e=>onSubmit(e)}>
+                        <Form onSubmit={handleSubmit(onSubmit)}>
                              <h1 style={{color:"black"}}>Login</h1>
                              <p className="text-muted">Sign In to your account</p>
                             <InputGroup className="mb-3">
@@ -83,41 +90,42 @@ const Login = () => {
                                     <i className="fa fa-envelope"></i>
                                 </CInputGroupText>
                               </CInputGroupPrepend>
-                                <Controller
-                                    as={Input}
+                                <Input
                                     type="text"
                                     id="email"
                                     name="email"
                                     placeholder="Email / Username"
-                                    control={control}
-                                    rules={{ required: true }}
-                                    invalid={errors.email ? true : false}
+                                    ref={register({required: "Required"})}
+                                    value={formData.email}
+                                    onChange={onChange}
                                 />
                                   {errors.email && (
                                     <FormFeedback>Email is Required!</FormFeedback>
                                   )}
                             </InputGroup>
-                            <CInputGroup className="mb-3">
+                            <InputGroup className="mb-3">
                               <CInputGroupPrepend>
                                 <CInputGroupText>
                                   <CIcon name="cil-lock-locked" />
                                 </CInputGroupText>
                               </CInputGroupPrepend>
-                                <Controller
-                                    as={Input}
+                                <Input
                                     type="password"
                                     id="password"
                                     name="password"
                                     placeholder="Password"
-                                    control={control}
-                                    rules={{ required: true }}
-                                    invalid={errors.repeat_password ? true : false}
+                                    ref={register({required: "Required"})}
+                                    onChange={onChange}
+                                    value={formData.password}
                                 />
                                   {errors.password && (
                                     <FormFeedback>Password is Required!</FormFeedback>
                                   )}
-                            </CInputGroup>
-                            <CButton type="submit" color="success" block>Create Account</CButton>
+                            </InputGroup>
+                            <Button type="submit" color="success" block>Log in</Button>
+                            <p className="d-flex text-dark justify-content-center my-2">
+                              Don't have an account? <Link to="/register">Register</Link>
+                            </p>
                           </Form>
                         </CardBody>
                       </Card>
@@ -130,5 +138,16 @@ const Login = () => {
     </Fragment>
   )
 }
+Login.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
+}
 
-export default Login
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+})
+
+
+
+export default connect(mapStateToProps, { setAlert, login } )(Login);

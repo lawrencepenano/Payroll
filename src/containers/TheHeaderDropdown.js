@@ -11,25 +11,21 @@ import {
   Button
 } from 'reactstrap';
 import CIcon from '@coreui/icons-react'
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { logout  } from '../actions/auth';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const TheHeaderDropdown = ({ logout }) => {
+const TheHeaderDropdown = ({isAuthenticated, logout}) => {
   /* Hanlde Automatic Logout */
   const [user, setUser] = useState("");
+  if(!isAuthenticated){
+    return <Redirect to="/login"/>
+  }
+  const logoutHandler = () =>{
+    logout();
+  }
 
-    useEffect(()=>{
-        if(localStorage.getItem('user')){
-            let current_user = JSON.parse(localStorage.getItem('user'));
-            setUser(current_user.name);
-        }
-    },[])
-
-    const logoutHandler = () =>{
-        logout();
-    }
   return (
     <CDropdown
       inNav
@@ -55,6 +51,11 @@ const TheHeaderDropdown = ({ logout }) => {
 }
 
 TheHeaderDropdown.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
   logout: PropTypes.func.isRequired,
 }
-export default connect(null, { logout } )(TheHeaderDropdown);
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps, { logout } )(TheHeaderDropdown);

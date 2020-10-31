@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import {
   CButton,
   CCard,
@@ -42,7 +42,7 @@ import { setAlert } from '../../../actions/alert';
 import { register } from '../../../actions/auth';
 import PropTypes from 'prop-types';
 
-const Register = ({setAlert, register}) => {
+const Register = ({setAlert, register, isAuthenticated}) => {
   const { control, handleSubmit, errors } = useForm();
   const [formData, setFormData] = useState({
     company_name: '',
@@ -64,8 +64,8 @@ const Register = ({setAlert, register}) => {
       }
   }
 
-  if(localStorage.getItem('user')){
-      window.location.replace("/blogs")
+  if(isAuthenticated){
+      return <Redirect to='/dashbord'/>
     }
 
   return (
@@ -98,11 +98,9 @@ const Register = ({setAlert, register}) => {
                                     invalid={errors.company_name ? true : false}
                                     value={formData.company_name}
                                     defaultValue={formData.company_name}
-                                    onChange={onchange}
+                                    onChange={onChange}
                                 />
-                                  {errors.company_name && (
-                                    <FormFeedback>Company Name is Required!</FormFeedback>
-                                  )}
+                                {errors.company_name && (<FormFeedback>Email is Required!</FormFeedback>)}
                             </InputGroup>
                             <InputGroup className="mb-3">
                               <CInputGroupPrepend>
@@ -124,9 +122,9 @@ const Register = ({setAlert, register}) => {
                                     invalid={errors.email ? true : false}
                                     value={formData.email}
                                     defaultValue={formData.email}
-                                    onChange={onchange}
+                                    onChange={onChange}
                                 />
-                                  {errors.email && errors.email.type == "required" && (<FormFeedback>Address 1 is Required!</FormFeedback>)}
+                                  {errors.email && errors.email.type == "required" && (<FormFeedback>Email is Required!</FormFeedback>)}
                                   {errors.email && errors.email.type == "pattern" && (<FormFeedback>Please input a valid email!</FormFeedback>)}
                             </InputGroup>
                             <InputGroup className="mb-3">
@@ -149,9 +147,9 @@ const Register = ({setAlert, register}) => {
                                     invalid={errors.phone ? true : false}
                                     value={formData.phone}
                                     defaultValue={formData.phone}
-                                    onChange={onchange}
+                                    onChange={onChange}
                                 />
-                                  {errors.phone && errors.phone.type == "required" && (<FormFeedback>Phone No. 1 is Required!</FormFeedback>)}
+                                  {errors.phone && errors.phone.type == "required" && (<FormFeedback>Phone No. is Required!</FormFeedback>)}
                                   {errors.phone && errors.phone.type == "pattern" && (<FormFeedback>Please input a valid Phone No.!</FormFeedback>)}
                             </InputGroup>
                             <InputGroup className="mb-3">
@@ -171,7 +169,7 @@ const Register = ({setAlert, register}) => {
                                     invalid={errors.first_name ? true : false}
                                     value={formData.first_name}
                                     defaultValue={formData.first_name}
-                                    onChange={onchange}
+                                    onChange={onChange}
                                 />
                                   {errors.first_name && (
                                     <FormFeedback>First Name is Required!</FormFeedback>
@@ -194,7 +192,7 @@ const Register = ({setAlert, register}) => {
                                     invalid={errors.last_name ? true : false}
                                     value={formData.last_name}
                                     defaultValue={formData.last_name}
-                                    onChange={onchange}
+                                    onChange={onChange}
                                 />
                                   {errors.last_name && (
                                     <FormFeedback>Last Name is Required!</FormFeedback>
@@ -217,7 +215,7 @@ const Register = ({setAlert, register}) => {
                                     invalid={errors.password ? true : false}
                                     value={formData.password}
                                     defaultValue={formData.password}
-                                    onChange={onchange}
+                                    onChange={onChange}
                                 />
                                   {errors.password && (
                                     <FormFeedback>Password is Required!</FormFeedback>
@@ -240,13 +238,16 @@ const Register = ({setAlert, register}) => {
                                     invalid={errors.password2 ? true : false}
                                     value={formData.password2}
                                     defaultValue={formData.password2}
-                                    onChange={onchange}
+                                    onChange={onChange}
                                 />
                                   {errors.password2 && (
                                     <FormFeedback>Password is Required!</FormFeedback>
                                   )}
                             </CInputGroup>
                             <Button type="submit" color="success" block>Create Account</Button>
+                            <p className="d-flex text-dark justify-content-center my-2">
+                              Already have an account? <Link to="/login">Sign In</Link>
+                            </p>
                           </Form>
                         </CardBody>
                       </Card>
@@ -263,6 +264,11 @@ const Register = ({setAlert, register}) => {
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 }
 
-export default connect(null, { setAlert, register } )(Register);
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps, { setAlert, register } )(Register);

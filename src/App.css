@@ -227,7 +227,7 @@
   /* Overlay */
   .dark-overlay {
     background-color: rgba(0, 0, 0, 0.7);
-    position: absolute;
+    /* position: absolute; */
     top: 0;
     left: 0;
     width: 100%;
@@ -378,7 +378,7 @@
  .register {
     position: relative;
     background: url('https://miro.medium.com/max/2800/1*rekFHWdIPIlhzB3UlHr8dQ.jpeg') no-repeat center center/cover;
-    height: 100vh;
+    /* height: 100vh; */
     overflow-y: auto;
  }
  
