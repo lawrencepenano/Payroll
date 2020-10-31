@@ -548,7 +548,7 @@ CostCenter.propTypes = {
     deleteRecord: PropTypes.func.isRequired,
     clearRecord: PropTypes.func.isRequired,
     records: PropTypes.array.isRequired,
-    records: PropTypes.object.isRequired,
+    record: PropTypes.object.isRequired,
     totalSize: PropTypes.number.isRequired,
   }
   

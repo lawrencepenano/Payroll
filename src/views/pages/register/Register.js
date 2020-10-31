@@ -142,7 +142,7 @@ const Register = ({setAlert, register, isAuthenticated}) => {
                                     control={control}
                                     rules={{ 
                                       required: true, 
-                                      pattern: /^([+]\d{2})?\d{10}$/
+                                      pattern: /((^(\+)(\d){12}$)|(^\d{11}$))/
                                    }}
                                     invalid={errors.phone ? true : false}
                                     value={formData.phone}

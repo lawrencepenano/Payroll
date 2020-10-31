@@ -41,11 +41,13 @@ export const register = ({ company_name, email, phone, first_name, last_name, pa
 
     try {
         const res = await axios.post('./api/register',body,config)
-        dispatch({
+        await dispatch({
             type: REGISTER_SUCCESS,
             payload: res.data.data
         })
-        // window.location.replace("#/dashboard")
+        setAuthToken(res.data.data.token)
+        window.location.replace("/#dashboard")
+        dispatch(setAlert('Successfully Registered', 'success', 1000))
     } catch (err){
         if(err.response && err.response.data && err.response.data.data){
             const errors = err.response.data.data;
