@@ -38,8 +38,9 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const User = React.lazy(() => import('./views/pages/users/User'));
 
 const Users = React.lazy(() => import('./views/pages/users/Users'));
-const Company = React.lazy(()=> import('./views/pages/company/Company'))
-const CostCenter = React.lazy(()=> import('./views/pages/cost-center/CostCenter'))
+const Company = React.lazy(()=> import('./views/pages/company/Company'));
+const CostCenter = React.lazy(()=> import('./views/pages/cost-center/CostCenter'));
+const Department = React.lazy(()=> import('./views/pages/department/Department'));
 
 
 
@@ -48,7 +49,8 @@ const routes = [
   // { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/company', name: 'Company', component: Company },
-  { path: '/cost-center', name: 'Company', component: CostCenter },
+  { path: '/cost-center', name: 'CostCenter', component: CostCenter },
+  { path: '/department', name: 'Department', component: Department },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },

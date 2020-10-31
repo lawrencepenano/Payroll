@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { setAlert } from './alert'; 
 import {
-    GET_ALL_COST_CENTER,
-    GET_COST_CENTER,
-    CLEAR_COST_CENTER
+    GET_ALL_DEPARTMENT,
+    GET_DEPARTMENT,
+    CLEAR_DEPARTMENT
 } from './types';
 
 const headers = {
@@ -11,13 +11,13 @@ const headers = {
 };
 
 /* DYNAMIC URL */
-const url = '/api/cost_center';
+const url = '/api/department';
 /* GET ALL RECORDS DISPATCH */
-const GET_ALL_RECORDS = GET_ALL_COST_CENTER;
+const GET_ALL_RECORDS = GET_ALL_DEPARTMENT;
 /* GET RECORD DISPATCH */
-const GET_RECORD = GET_COST_CENTER;
+const GET_RECORD = GET_DEPARTMENT;
 /* CLEAR RECORD DISPATCH */
-const CLEAR_RECORD = CLEAR_COST_CENTER;
+const CLEAR_RECORD = CLEAR_DEPARTMENT;
 
 /* GET RECORDS */
 export const getRecords = (

@@ -28,12 +28,12 @@ import {
     import _ from "lodash";
     import Swal from 'sweetalert2';
     import { connect } from 'react-redux';
-    import { getRecords, getRecord, storeRecord , updateRecord, deleteRecord , clearRecord } from '../../../actions/costCenter';
+    import { getRecords, getRecord, storeRecord , updateRecord, deleteRecord , clearRecord } from '../../../actions/department';
     import PropTypes from 'prop-types';
 
-const CostCenter = ({records, record, totalSize, getRecords, getRecord, storeRecord,  updateRecord, deleteRecord, clearRecord}) => {
+const Department = ({records, record, totalSize, getRecords, getRecord, storeRecord,  updateRecord, deleteRecord, clearRecord}) => {
     const { control, handleSubmit, register, errors } = useForm();  
-    const [menuItemName, setMenuItemName] = useState("Cost Center") // For dynamic naming of menu item
+    const [menuItemName, setMenuItemName] = useState("Department") // For dynamic naming of menu item
     const [formData, setFormData] = useState({});
     const [page1, setPage1] = useState(1);
     const [sortFieldQuery, setSortFieldQuery] = useState("id");
@@ -540,7 +540,7 @@ const CostCenter = ({records, record, totalSize, getRecords, getRecord, storeRec
     )
 }
 
-CostCenter.propTypes = {
+Department.propTypes = {
     getRecords: PropTypes.func.isRequired,
     getRecord: PropTypes.func.isRequired,
     storeRecord: PropTypes.func.isRequired,
@@ -553,11 +553,11 @@ CostCenter.propTypes = {
   }
   
   const mapStateToProps = state => ({
-    records: state.costCenter.records,
-    record: state.costCenter.record,
-    totalSize: state.costCenter.totalSize
+    records: state.department.records,
+    record: state.department.record,
+    totalSize: state.department.totalSize
   })
   
-  export default connect(mapStateToProps, { getRecords, getRecord, storeRecord , updateRecord, deleteRecord, clearRecord } )(CostCenter);
+  export default connect(mapStateToProps, { getRecords, getRecord, storeRecord , updateRecord, deleteRecord, clearRecord } )(Department);
   
   

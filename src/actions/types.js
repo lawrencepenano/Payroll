@@ -29,3 +29,8 @@ export const CLEAR_COMPANY = 'CLEAR_USER' /* This it to clear the current select
 export const GET_ALL_COST_CENTER = 'GET_ALL_COST_CENTER';
 export const GET_COST_CENTER = 'GET_COST_CENTER';
 export const CLEAR_COST_CENTER = 'CLEAR_COST_CENTER' /* This it to clear the current selected record */
+
+// Department
+export const GET_ALL_DEPARTMENT = 'GET_ALL_DEPARTMENT';
+export const GET_DEPARTMENT = 'GET_DEPARTMENT';
+export const CLEAR_DEPARTMENT = 'CLEAR_DEPARTMENT' /* This it to clear the current selected record */

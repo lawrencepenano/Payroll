@@ -5,6 +5,7 @@ import user from './user';
 import company from './company';
 import globalParameter from './globalParameter'
 import costCenter from './costCenter'
+import department from './department'
 
 export default combineReducers({
     alert,
@@ -12,5 +13,6 @@ export default combineReducers({
     user,
     globalParameter,
     company,
-    costCenter
+    costCenter,
+    department
 });

@@ -1,7 +1,7 @@
 import {
-    GET_ALL_COST_CENTER,
-    GET_COST_CENTER,
-    CLEAR_COST_CENTER,
+    GET_ALL_DEPARTMENT,
+    GET_DEPARTMENT,
+    CLEAR_DEPARTMENT,
 } from '../actions/types';
 
 
@@ -14,18 +14,18 @@ const initialState = {
 export default function(state = initialState, action ){
     const { type, payload } = action;
     switch(type){
-        case GET_ALL_COST_CENTER:
+        case GET_ALL_DEPARTMENT:
             return {
                 ...state,
                 records: payload.data,
                 totalSize: payload.meta.total
             }
-        case GET_COST_CENTER:
+        case GET_DEPARTMENT:
             return {
                 ...state,
                 record: payload,
             }
-        case CLEAR_COST_CENTER:
+        case CLEAR_DEPARTMENT:
             return {
                 ...state,
                 record: {},

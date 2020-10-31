@@ -25,6 +25,12 @@ export default [
     icon: 'cil-drop',
   },
   {
+    _tag: 'CSidebarNavItem',
+    name: 'Department',
+    to: '/department',
+    icon: 'cil-drop',
+  },
+  {
     _tag: 'CSidebarNavTitle',
     _children: ['Theme']
   },
