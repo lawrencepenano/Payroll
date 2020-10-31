@@ -34,3 +34,8 @@ export const CLEAR_COST_CENTER = 'CLEAR_COST_CENTER' /* This it to clear the cur
 export const GET_ALL_DEPARTMENT = 'GET_ALL_DEPARTMENT';
 export const GET_DEPARTMENT = 'GET_DEPARTMENT';
 export const CLEAR_DEPARTMENT = 'CLEAR_DEPARTMENT' /* This it to clear the current selected record */
+
+// Pay Group
+export const GET_ALL_PAY_GROUPS = 'GET_ALL_PAY_GROUPS';
+export const GET_PAY_GROUP = 'GET_PAY_GROUP';
+export const CLEAR_PAY_GROUP = 'CLEAR_PAY_GROUP' /* This it to clear the current selected record */

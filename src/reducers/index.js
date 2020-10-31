@@ -6,6 +6,7 @@ import company from './company';
 import globalParameter from './globalParameter'
 import costCenter from './costCenter'
 import department from './department'
+import payGroup from './payGroup'
 
 export default combineReducers({
     alert,
@@ -14,5 +15,6 @@ export default combineReducers({
     globalParameter,
     company,
     costCenter,
-    department
+    department,
+    payGroup
 });

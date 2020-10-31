@@ -41,6 +41,7 @@ const Users = React.lazy(() => import('./views/pages/users/Users'));
 const Company = React.lazy(()=> import('./views/pages/company/Company'));
 const CostCenter = React.lazy(()=> import('./views/pages/cost-center/CostCenter'));
 const Department = React.lazy(()=> import('./views/pages/department/Department'));
+const PayGroup = React.lazy(()=> import('./views/pages/pay-group/PayGroup'));
 
 
 
@@ -51,6 +52,9 @@ const routes = [
   { path: '/company', name: 'Company', component: Company },
   { path: '/cost-center', name: 'CostCenter', component: CostCenter },
   { path: '/department', name: 'Department', component: Department },
+  { path: '/pay-group', name: 'PayGroup', component: PayGroup },
+
+
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },

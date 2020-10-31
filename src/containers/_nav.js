@@ -31,6 +31,12 @@ export default [
     icon: 'cil-drop',
   },
   {
+    _tag: 'CSidebarNavItem',
+    name: 'Pay Group',
+    to: '/pay-group',
+    icon: 'cil-drop',
+  },
+  {
     _tag: 'CSidebarNavTitle',
     _children: ['Theme']
   },
