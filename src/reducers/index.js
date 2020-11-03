@@ -7,6 +7,8 @@ import globalParameter from './globalParameter'
 import costCenter from './costCenter'
 import department from './department'
 import payGroup from './payGroup'
+import totalWorkDaysPerYear from './totalWorkDaysPerYear'
+import totalWorkMonthsPerYear from './totalWorkMonthsPerYear'
 
 export default combineReducers({
     alert,
@@ -16,5 +18,7 @@ export default combineReducers({
     company,
     costCenter,
     department,
-    payGroup
+    payGroup,
+    totalWorkDaysPerYear,
+    totalWorkMonthsPerYear
 });

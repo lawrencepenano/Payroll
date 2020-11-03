@@ -10,6 +10,22 @@ export default [
   },
   {
     _tag: 'CSidebarNavTitle',
+    _children: ['Data Configuration']
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Work Days Per Year',
+    to: '/total-work-days-per-year',
+    icon: 'cil-drop',
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Work Months Per Year',
+    to: '/total-work-months-per-year',
+    icon: 'cil-drop',
+  },
+  {
+    _tag: 'CSidebarNavTitle',
     _children: ['Data Setup']
   },
   {

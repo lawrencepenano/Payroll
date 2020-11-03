@@ -42,7 +42,8 @@ const Company = React.lazy(()=> import('./views/pages/company/Company'));
 const CostCenter = React.lazy(()=> import('./views/pages/cost-center/CostCenter'));
 const Department = React.lazy(()=> import('./views/pages/department/Department'));
 const PayGroup = React.lazy(()=> import('./views/pages/pay-group/PayGroup'));
-
+const TotalWorkDaysPerYear = React.lazy(()=> import('./views/pages/total-work-days-per_year/TotalWorkDaysPerYear'));
+const TotalWorkMonthsPerYear = React.lazy(()=> import('./views/pages/total-work-months-per_year/TotalWorkMonthsPerYear'));
 
 
 
@@ -50,9 +51,11 @@ const routes = [
   // { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/company', name: 'Company', component: Company },
-  { path: '/cost-center', name: 'CostCenter', component: CostCenter },
+  { path: '/cost-center', name: 'Cost Center', component: CostCenter },
   { path: '/department', name: 'Department', component: Department },
-  { path: '/pay-group', name: 'PayGroup', component: PayGroup },
+  { path: '/pay-group', name: 'Pay Group', component: PayGroup },
+  { path: '/total-work-days-per-year', name: 'Work Days Per Year', component: TotalWorkDaysPerYear },
+  { path: '/total-work-months-per-year', name: 'Work Months Per Year', component: TotalWorkMonthsPerYear },
 
 
   { path: '/theme', name: 'Theme', component: Colors, exact: true },

@@ -39,3 +39,13 @@ export const CLEAR_DEPARTMENT = 'CLEAR_DEPARTMENT' /* This it to clear the curre
 export const GET_ALL_PAY_GROUPS = 'GET_ALL_PAY_GROUPS';
 export const GET_PAY_GROUP = 'GET_PAY_GROUP';
 export const CLEAR_PAY_GROUP = 'CLEAR_PAY_GROUP' /* This it to clear the current selected record */
+
+// Total Work Days Per Year
+export const GET_TOTAL_WORK_DAYS_PER_YEAR = 'GET_TOTAL_WORK_DAYS_PER_YEAR';
+export const GET_WORK_DAYS_PER_YEAR = 'GET_WORK_DAYS_PER_YEAR';
+export const CLEAR_WORK_DAYS_PER_YEAR = 'CLEAR_WORK_DAYS_PER_YEAR' /* This it to clear the current selected record */
+
+// Total Work Months Per Year
+export const GET_TOTAL_WORK_MONTHS_PER_YEAR = 'GET_TOTAL_WORK_MONTHS_PER_YEAR';
+export const GET_WORK_MONTHS_PER_YEAR = 'GET_WORK_MONTHS_PER_YEAR';
+export const CLEAR_WORK_MONTHS_PER_YEAR = 'CLEAR_WORK_MONTHS_PER_YEAR' /* This it to clear the current selected record */
