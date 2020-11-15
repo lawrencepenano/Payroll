@@ -173,7 +173,9 @@ const Department = ({records, record, totalSize, getRecords, getRecord, storeRec
                   'success'
                 )
                 .then(setButtonSpinner(false))
-                .then(()=>{reloadTable()
+                .then(()=>{
+                  reloadTable();
+                  toggleAddOrEditModal();
                 })
               }
               else {

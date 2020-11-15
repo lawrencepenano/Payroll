@@ -53,6 +53,12 @@ export default [
     icon: 'cil-drop',
   },
   {
+    _tag: 'CSidebarNavItem',
+    name: 'WHS-Standard',
+    to: '/whs-standard',
+    icon: 'cil-drop',
+  },
+  {
     _tag: 'CSidebarNavTitle',
     _children: ['Theme']
   },

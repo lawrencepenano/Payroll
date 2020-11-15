@@ -9,6 +9,7 @@ import department from './department'
 import payGroup from './payGroup'
 import totalWorkDaysPerYear from './totalWorkDaysPerYear'
 import totalWorkMonthsPerYear from './totalWorkMonthsPerYear'
+import whsStandard from './whsStandard'
 
 export default combineReducers({
     alert,
@@ -20,5 +21,6 @@ export default combineReducers({
     department,
     payGroup,
     totalWorkDaysPerYear,
-    totalWorkMonthsPerYear
+    totalWorkMonthsPerYear,
+    whsStandard
 });

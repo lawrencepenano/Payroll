@@ -28,12 +28,12 @@ import {
     import _ from "lodash";
     import Swal from 'sweetalert2';
     import { connect } from 'react-redux';
-    import { getRecords, getRecord, storeRecord , updateRecord, deleteRecord , clearRecord } from '../../../actions/totalWorkDaysPerYear';
+    import { getRecords, getRecord, storeRecord , updateRecord, deleteRecord , clearRecord } from '../../../actions/payGroup';
     import PropTypes from 'prop-types';
 
-const TotalWorkDaysPerYear = ({records, record, totalSize, getRecords, getRecord, storeRecord,  updateRecord, deleteRecord, clearRecord}) => {
+const PayGroup = ({records, record, totalSize, getRecords, getRecord, storeRecord,  updateRecord, deleteRecord, clearRecord}) => {
     const { control, handleSubmit, register, errors } = useForm();  
-    const [menuItemName, setMenuItemName] = useState("Work Days Per Year") // For dynamic naming of menu item
+    const [menuItemName, setMenuItemName] = useState("Pay Group") // For dynamic naming of menu item
     const [formData, setFormData] = useState({});
     const [page1, setPage1] = useState(1);
     const [sortFieldQuery, setSortFieldQuery] = useState("id");
@@ -173,7 +173,9 @@ const TotalWorkDaysPerYear = ({records, record, totalSize, getRecords, getRecord
                   'success'
                 )
                 .then(setButtonSpinner(false))
-                .then(()=>{reloadTable()
+                .then(()=>{
+                  reloadTable();
+                  toggleAddOrEditModal();
                 })
               }
               else {
@@ -540,7 +542,7 @@ const TotalWorkDaysPerYear = ({records, record, totalSize, getRecords, getRecord
     )
 }
 
-TotalWorkDaysPerYear.propTypes = {
+PayGroup.propTypes = {
     getRecords: PropTypes.func.isRequired,
     getRecord: PropTypes.func.isRequired,
     storeRecord: PropTypes.func.isRequired,
@@ -553,11 +555,11 @@ TotalWorkDaysPerYear.propTypes = {
   }
   
   const mapStateToProps = state => ({
-    records: state.totalWorkDaysPerYear.records,
-    record: state.totalWorkDaysPerYear.record,
-    totalSize: state.totalWorkDaysPerYear.totalSize
+    records: state.payGroup.records,
+    record: state.payGroup.record,
+    totalSize: state.payGroup.totalSize
   })
   
-  export default connect(mapStateToProps, { getRecords, getRecord, storeRecord , updateRecord, deleteRecord, clearRecord } )(TotalWorkDaysPerYear);
+  export default connect(mapStateToProps, { getRecords, getRecord, storeRecord , updateRecord, deleteRecord, clearRecord } )(PayGroup);
   
   

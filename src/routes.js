@@ -38,12 +38,13 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const User = React.lazy(() => import('./views/pages/users/User'));
 
 const Users = React.lazy(() => import('./views/pages/users/Users'));
-const Company = React.lazy(()=> import('./views/pages/company/Company'));
-const CostCenter = React.lazy(()=> import('./views/pages/cost-center/CostCenter'));
-const Department = React.lazy(()=> import('./views/pages/department/Department'));
-const PayGroup = React.lazy(()=> import('./views/pages/pay-group/PayGroup'));
-const TotalWorkDaysPerYear = React.lazy(()=> import('./views/pages/total-work-days-per_year/TotalWorkDaysPerYear'));
-const TotalWorkMonthsPerYear = React.lazy(()=> import('./views/pages/total-work-months-per_year/TotalWorkMonthsPerYear'));
+const Company = React.lazy(()=> import('./views/pages/Company/Company'));
+const CostCenter = React.lazy(()=> import('./views/pages/CostCenter/CostCenter'));
+const Department = React.lazy(()=> import('./views/pages/Department/Department'));
+const PayGroup = React.lazy(()=> import('./views/pages/PayGroup/PayGroup'));
+const TotalWorkDaysPerYear = React.lazy(()=> import('./views/pages/TotalWorkDaysPerYear/TotalWorkDaysPerYear'));
+const TotalWorkMonthsPerYear = React.lazy(()=> import('./views/pages/TotalWorkMonthsPerYear/TotalWorkMonthsPerYear'));
+const WHSStandard = React.lazy(()=> import('./views/pages/WHSType/WHSStandard'));
 
 
 
@@ -56,6 +57,7 @@ const routes = [
   { path: '/pay-group', name: 'Pay Group', component: PayGroup },
   { path: '/total-work-days-per-year', name: 'Work Days Per Year', component: TotalWorkDaysPerYear },
   { path: '/total-work-months-per-year', name: 'Work Months Per Year', component: TotalWorkMonthsPerYear },
+  { path: '/whs-standard', name: 'WHS-Standard', component: WHSStandard },
 
 
   { path: '/theme', name: 'Theme', component: Colors, exact: true },

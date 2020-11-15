@@ -39,6 +39,7 @@
     "enzyme-adapter-react-16": "^1.15.2",
     "node-sass": "^4.14.1",
     "prop-types": "^15.7.2",
+    "rc-time-picker": "^3.7.3",
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.6",
     "react-bootstrap-table-next": "^4.0.3",
@@ -91,7 +92,6 @@
   "engines": {
     "node": ">=10",
     "npm": ">=6"
-  }
-  ,
+  },
   "proxy": "http://localhost:8000"
 }

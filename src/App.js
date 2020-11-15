@@ -7,7 +7,7 @@ import setAuthToken from './utils/setAuthToken';
 import { Provider } from 'react-redux'
 import store from './store'
 import { loadUser } from './actions/auth'
-import { getModules, getRoles } from './actions/globalParameter';
+import { getModules, getRoles, getTotalWorkingDays, getTotalWorkingMonths } from './actions/globalParameter';
 
 
 if(localStorage.token){
@@ -37,6 +37,8 @@ const App = () => {
       store.dispatch(loadUser())
       store.dispatch(getModules())
       store.dispatch(getRoles())
+      store.dispatch(getTotalWorkingDays())
+      store.dispatch(getTotalWorkingMonths())
     },[])
 
     return (

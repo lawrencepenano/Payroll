@@ -9,10 +9,15 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT = 'LOGOUT';
 
 
+/* Global Parameters */
 // Modules
 export const GET_ALL_LIST_OF_MODULES = 'GET_ALL_LIST_OF_MODULES';
 // Roles
 export const GET_ALL_LIST_OF_ROLES = 'GET_ALL_LIST_OF_ROLES';
+// Total Working Days Per Year
+export const GET_TOTAL_WORKING_DAYS= 'GET_TOTAL_WORKING_DAYS';
+// Total Working Months Per Year
+export const GET_TOTAL_WORKING_MONTHS = 'GET_TOTAL_WORKING_MONTHS';
 
 // User Module
 export const GET_ALL_USERS = 'GET_ALL_USERS';
@@ -49,3 +54,8 @@ export const CLEAR_WORK_DAYS_PER_YEAR = 'CLEAR_WORK_DAYS_PER_YEAR' /* This it to
 export const GET_TOTAL_WORK_MONTHS_PER_YEAR = 'GET_TOTAL_WORK_MONTHS_PER_YEAR';
 export const GET_WORK_MONTHS_PER_YEAR = 'GET_WORK_MONTHS_PER_YEAR';
 export const CLEAR_WORK_MONTHS_PER_YEAR = 'CLEAR_WORK_MONTHS_PER_YEAR' /* This it to clear the current selected record */
+
+// WHS Standard
+export const GET_ALL_WHS_STANDARD = 'GET_ALL_WHS_STANDARD';
+export const GET_WHS_STANDARD = 'GET_WHS_STANDARD';
+export const CLEAR_WHS_STANDARD = 'CLEAR_WHS_STANDARD' /* This it to clear the current selected record */

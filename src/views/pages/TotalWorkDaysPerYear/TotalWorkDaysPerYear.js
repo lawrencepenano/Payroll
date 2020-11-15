@@ -28,12 +28,12 @@ import {
     import _ from "lodash";
     import Swal from 'sweetalert2';
     import { connect } from 'react-redux';
-    import { getRecords, getRecord, storeRecord , updateRecord, deleteRecord , clearRecord } from '../../../actions/totalWorkMonthsPerYear';
+    import { getRecords, getRecord, storeRecord , updateRecord, deleteRecord , clearRecord } from '../../../actions/totalWorkDaysPerYear';
     import PropTypes from 'prop-types';
 
-const TotalWorkMonthsPerYear = ({records, record, totalSize, getRecords, getRecord, storeRecord,  updateRecord, deleteRecord, clearRecord}) => {
+const TotalWorkDaysPerYear = ({records, record, totalSize, getRecords, getRecord, storeRecord,  updateRecord, deleteRecord, clearRecord}) => {
     const { control, handleSubmit, register, errors } = useForm();  
-    const [menuItemName, setMenuItemName] = useState("Work Months Per Year") // For dynamic naming of menu item
+    const [menuItemName, setMenuItemName] = useState("Work Days Per Year") // For dynamic naming of menu item
     const [formData, setFormData] = useState({});
     const [page1, setPage1] = useState(1);
     const [sortFieldQuery, setSortFieldQuery] = useState("id");
@@ -173,7 +173,9 @@ const TotalWorkMonthsPerYear = ({records, record, totalSize, getRecords, getReco
                   'success'
                 )
                 .then(setButtonSpinner(false))
-                .then(()=>{reloadTable()
+                .then(()=>{
+                  reloadTable();
+                  toggleAddOrEditModal();
                 })
               }
               else {
@@ -540,7 +542,7 @@ const TotalWorkMonthsPerYear = ({records, record, totalSize, getRecords, getReco
     )
 }
 
-TotalWorkMonthsPerYear.propTypes = {
+TotalWorkDaysPerYear.propTypes = {
     getRecords: PropTypes.func.isRequired,
     getRecord: PropTypes.func.isRequired,
     storeRecord: PropTypes.func.isRequired,
@@ -553,11 +555,11 @@ TotalWorkMonthsPerYear.propTypes = {
   }
   
   const mapStateToProps = state => ({
-    records: state.totalWorkMonthsPerYear.records,
-    record: state.totalWorkMonthsPerYear.record,
-    totalSize: state.totalWorkMonthsPerYear.totalSize
+    records: state.totalWorkDaysPerYear.records,
+    record: state.totalWorkDaysPerYear.record,
+    totalSize: state.totalWorkDaysPerYear.totalSize
   })
   
-  export default connect(mapStateToProps, { getRecords, getRecord, storeRecord , updateRecord, deleteRecord, clearRecord } )(TotalWorkMonthsPerYear);
+  export default connect(mapStateToProps, { getRecords, getRecord, storeRecord , updateRecord, deleteRecord, clearRecord } )(TotalWorkDaysPerYear);
   
   

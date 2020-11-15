@@ -28,12 +28,12 @@ import {
     import _ from "lodash";
     import Swal from 'sweetalert2';
     import { connect } from 'react-redux';
-    import { getRecords, getRecord, storeRecord , updateRecord, deleteRecord , clearRecord } from '../../../actions/payGroup';
+    import { getRecords, getRecord, storeRecord , updateRecord, deleteRecord , clearRecord } from '../../../actions/costCenter';
     import PropTypes from 'prop-types';
 
-const PayGroup = ({records, record, totalSize, getRecords, getRecord, storeRecord,  updateRecord, deleteRecord, clearRecord}) => {
+const CostCenter = ({records, record, totalSize, getRecords, getRecord, storeRecord,  updateRecord, deleteRecord, clearRecord}) => {
     const { control, handleSubmit, register, errors } = useForm();  
-    const [menuItemName, setMenuItemName] = useState("Pay Group") // For dynamic naming of menu item
+    const [menuItemName, setMenuItemName] = useState("Cost Center") // For dynamic naming of menu item
     const [formData, setFormData] = useState({});
     const [page1, setPage1] = useState(1);
     const [sortFieldQuery, setSortFieldQuery] = useState("id");
@@ -173,7 +173,9 @@ const PayGroup = ({records, record, totalSize, getRecords, getRecord, storeRecor
                   'success'
                 )
                 .then(setButtonSpinner(false))
-                .then(()=>{reloadTable()
+                .then(()=>{
+                  reloadTable();
+                  toggleAddOrEditModal();
                 })
               }
               else {
@@ -540,7 +542,7 @@ const PayGroup = ({records, record, totalSize, getRecords, getRecord, storeRecor
     )
 }
 
-PayGroup.propTypes = {
+CostCenter.propTypes = {
     getRecords: PropTypes.func.isRequired,
     getRecord: PropTypes.func.isRequired,
     storeRecord: PropTypes.func.isRequired,
@@ -553,11 +555,11 @@ PayGroup.propTypes = {
   }
   
   const mapStateToProps = state => ({
-    records: state.payGroup.records,
-    record: state.payGroup.record,
-    totalSize: state.payGroup.totalSize
+    records: state.costCenter.records,
+    record: state.costCenter.record,
+    totalSize: state.costCenter.totalSize
   })
   
-  export default connect(mapStateToProps, { getRecords, getRecord, storeRecord , updateRecord, deleteRecord, clearRecord } )(PayGroup);
+  export default connect(mapStateToProps, { getRecords, getRecord, storeRecord , updateRecord, deleteRecord, clearRecord } )(CostCenter);
   
   
